@@ -18,11 +18,6 @@ on:
         required: true
         default: true
         type: boolean
-      open_report:
-        description: 'Open report after generation'
-        required: false
-        default: false
-        type: boolean
 
 jobs:
   generate-report:
@@ -68,13 +63,10 @@ jobs:
         echo "🔧 **Configuration:**" >> $GITHUB_STEP_SUMMARY
         echo "- Test Suite: ${{ github.event.inputs.test_suite }}" >> $GITHUB_STEP_SUMMARY
         echo "- Generate Report: ${{ github.event.inputs.generate_report }}" >> $GITHUB_STEP_SUMMARY
-        echo "- Open Report: ${{ github.event.inputs.open_report }}" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "📁 **Reports Generated:**" >> $GITHUB_STEP_SUMMARY
         echo "- Playwright HTML Report" >> $GITHUB_STEP_SUMMARY
-        if [ "${{ github.event.inputs.generate_report }}" = "true" ]; then
-          echo "- Enhanced Custom Report" >> $GITHUB_STEP_SUMMARY
-        fi
+        echo "- Enhanced Custom Report" >> $GITHUB_STEP_SUMMARY
         echo "- Test Results (JSON)" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "📥 **Download Reports:** Check the Actions tab for artifacts"

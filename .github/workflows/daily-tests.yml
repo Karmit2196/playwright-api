@@ -70,4 +70,4 @@ jobs:
         echo "- Enhanced Custom Report" >> $GITHUB_STEP_SUMMARY
         echo "- Test Results (JSON)" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "📥 **Download Reports:** Check the Actions tab for artifacts" >> $GITHUB_STEP_SUMMARY 
+        echo "📥 **Download Reports:** Check the Actions tab for artifacts" 

@@ -121,11 +121,6 @@ npm run preview          # Run tests and show report
 | `npm run ci` | Run type check + tests |
 | `npm run clean` | Clean test artifacts |
 | `npm run preview` | Run tests and show report |
-| `npm run report:generate` | Generate enhanced HTML report |
-| `npm run report:enhanced` | Run tests + generate enhanced report |
-| `npm run report:open` | Open Playwright HTML report |
-| `npm run report:custom` | Open custom enhanced report |
-| `npm run report:all` | Run tests + generate + open all reports |
 
 ## 🔧 Key Components
 
@@ -202,10 +197,10 @@ This repository includes automated workflows for continuous integration and dail
 - **Triggers**: Manual trigger only
 - **Features**:
   - Choose test suite to run (all, health, demo, users)
-  - Generate enhanced HTML reports on demand
-  - Customizable report generation
+  - Generate comprehensive HTML reports on demand
+  - Customizable test suite selection
   - Uploads artifacts for 90 days
-  - **Perfect for on-demand reporting**
+  - **Perfect for on-demand testing and reporting**
 
 ### **Manual Trigger**
 You can manually run any workflow from the GitHub Actions tab in your repository:
@@ -218,10 +213,9 @@ You can manually run any workflow from the GitHub Actions tab in your repository
 
 ### **HTML Reports Generated Automatically**
 Every workflow run now generates:
-- 📊 **Playwright HTML Report** - Standard detailed report
-- 🎨 **Enhanced Custom Report** - Beautiful branded report
-- 📄 **JSON Results** - Machine-readable data
-- 📋 **JUnit XML** - Standard CI/CD format
+- 📊 **Playwright HTML Report** - Comprehensive detailed report with test execution details
+- 📄 **JSON Results** - Machine-readable data for CI/CD integration
+- 📋 **JUnit XML** - Standard CI/CD format for test reporting tools
 
 ## 📊 Test Reports
 
@@ -234,29 +228,24 @@ npx playwright show-report
 # Open test results
 npx playwright show-report test-results/
 
-# Generate enhanced custom report
-npm run report:generate
-
-# Run tests and generate enhanced report
-npm run report:enhanced
-
-# Open all reports
-npm run report:all
+# Run tests and open report
+npm run preview
 ```
 
 ### **Report Types Available:**
 
-1. **Standard Playwright Report** - Built-in HTML report with detailed test information
-2. **Custom Enhanced Report** - Beautiful, branded report with framework-specific styling
-3. **JSON Results** - Machine-readable test results for CI/CD integration
-4. **JUnit XML** - Standard format for test reporting tools
+1. **Playwright HTML Report** - Comprehensive built-in report with detailed test information
+2. **JSON Results** - Machine-readable test results for CI/CD integration
+3. **JUnit XML** - Standard format for test reporting tools
 
-### **HTML Report Features:**
-- 🎨 **Beautiful Design** - Modern, responsive UI with gradients and animations
-- 📊 **Comprehensive Stats** - Pass/fail counts, duration, success rates
-- 🔍 **Quick Navigation** - Easy access to detailed results and artifacts
+### **Playwright HTML Report Features:**
+- 🎨 **Beautiful Design** - Modern, responsive UI with comprehensive test details
+- 📊 **Comprehensive Stats** - Pass/fail counts, duration, success rates, and trends
+- 🔍 **Detailed Test Information** - Step-by-step execution, screenshots, and traces
 - 📱 **Mobile Friendly** - Responsive design for all devices
 - 🌐 **Cross-Platform** - Works on Windows, Mac, and Linux
+- 🎥 **Video & Screenshots** - Automatic capture on failures
+- 📈 **Test History** - Track test performance over time
 
 ## 🎯 Benefits
 

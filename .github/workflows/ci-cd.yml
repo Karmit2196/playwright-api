@@ -39,9 +39,6 @@ jobs:
     - name: Run tests with coverage
       run: npm run test:coverage
       
-    - name: Generate enhanced HTML report
-      run: npm run report:generate
-      
     - uses: actions/upload-artifact@v4
       if: always()
       with:
@@ -49,7 +46,6 @@ jobs:
         path: |
           playwright-report/
           test-results/
-          custom-reports/
           coverage/
         retention-days: 30
         
@@ -73,7 +69,6 @@ jobs:
           
           comment += '📊 **Reports Generated:**\n';
           comment += '- Playwright HTML Report\n';
-          comment += '- Enhanced Custom Report\n';
           comment += '- Test Results (JSON)\n';
           comment += '- JUnit XML Report\n\n';
           
@@ -81,8 +76,7 @@ jobs:
           
           comment += '🚀 **Quick Actions:**\n';
           comment += '- Run tests locally: `npm test`\n';
-          comment += '- Generate report: `npm run report:generate`\n';
-          comment += '- View report: `npm run report:open`';
+          comment += '- View report: `npm run test:report`';
           
           github.rest.issues.createComment({
             issue_number: context.issue.number,
@@ -100,7 +94,6 @@ jobs:
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "📊 **Reports Generated:**" >> $GITHUB_STEP_SUMMARY
         echo "- Playwright HTML Report" >> $GITHUB_STEP_SUMMARY
-        echo "- Enhanced Custom Report" >> $GITHUB_STEP_SUMMARY
         echo "- Test Results (JSON)" >> $GITHUB_STEP_SUMMARY
         echo "- JUnit XML Report" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY

@@ -13,11 +13,6 @@ on:
           - health
           - demo
           - users
-      generate_report:
-        description: 'Generate enhanced HTML report'
-        required: true
-        default: true
-        type: boolean
 
 jobs:
   generate-report:
@@ -52,22 +47,17 @@ jobs:
           npm run test:users
         fi
       
-    - name: Generate enhanced HTML report
-      if: ${{ github.event.inputs.generate_report }}
-      run: npm run report:generate
-      
     - name: Generate test summary
       run: |
         echo "## 📊 Manual Report Generation" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "🔧 **Configuration:**" >> $GITHUB_STEP_SUMMARY
         echo "- Test Suite: ${{ github.event.inputs.test_suite }}" >> $GITHUB_STEP_SUMMARY
-        echo "- Generate Report: ${{ github.event.inputs.generate_report }}" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "📁 **Reports Generated:**" >> $GITHUB_STEP_SUMMARY
         echo "- Playwright HTML Report" >> $GITHUB_STEP_SUMMARY
-        echo "- Enhanced Custom Report" >> $GITHUB_STEP_SUMMARY
         echo "- Test Results (JSON)" >> $GITHUB_STEP_SUMMARY
+        echo "- JUnit XML Report" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "📥 **Download Reports:** Check the Actions tab for artifacts"
       
@@ -78,7 +68,6 @@ jobs:
         path: |
           playwright-report/
           test-results/
-          custom-reports/
         retention-days: 90
         
     - name: Comment on workflow run

@@ -23,7 +23,22 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: 1,  // Changed from undefined to 1
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [
+    ['html', { 
+      outputFolder: 'playwright-report',
+      open: 'never',
+      attachmentsBaseURL: 'attachments/'
+    }],
+    ['json', { 
+      outputFile: 'test-results/test-results.json' 
+    }],
+    ['list', { 
+      printSteps: true 
+    }],
+    ['junit', { 
+      outputFile: 'test-results/junit.xml' 
+    }]
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -34,6 +49,12 @@ export default defineConfig({
     
     /* Global timeout for all actions */
     actionTimeout: getTimeout(),
+
+    /* Collect screenshot on failure */
+    screenshot: 'only-on-failure',
+
+    /* Collect video on failure */
+    video: 'retain-on-failure',
   },
 
   /* Configure projects for major browsers */
@@ -46,6 +67,12 @@ export default defineConfig({
       },
     },
   ],
+
+  /* Global test timeout */
+  timeout: 60000,
+
+  /* Output directory for test artifacts */
+  outputDir: 'test-results/',
 
   /* Run your local dev server before starting the tests */
   // webServer: {

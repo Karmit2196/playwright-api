@@ -1,0 +1,105 @@
+name: Manual Report Generation
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_suite:
+        description: 'Test suite to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - health
+          - demo
+          - users
+      generate_report:
+        description: 'Generate enhanced HTML report'
+        required: true
+        default: true
+        type: boolean
+      open_report:
+        description: 'Open report after generation'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  generate-report:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps
+      
+    - name: Run selected test suite
+      run: |
+        if [ "${{ github.event.inputs.test_suite }}" = "all" ]; then
+          npm run test:full
+        elif [ "${{ github.event.inputs.test_suite }}" = "health" ]; then
+          npm run test:health
+        elif [ "${{ github.event.inputs.test_suite }}" = "demo" ]; then
+          npm run test:demo
+        elif [ "${{ github.event.inputs.test_suite }}" = "users" ]; then
+          npm run test:users
+        fi
+      
+    - name: Generate enhanced HTML report
+      if: ${{ github.event.inputs.generate_report }}
+      run: npm run report:generate
+      
+    - name: Generate test summary
+      run: |
+        echo "## 📊 Manual Report Generation" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "🔧 **Configuration:**" >> $GITHUB_STEP_SUMMARY
+        echo "- Test Suite: ${{ github.event.inputs.test_suite }}" >> $GITHUB_STEP_SUMMARY
+        echo "- Generate Report: ${{ github.event.inputs.generate_report }}" >> $GITHUB_STEP_SUMMARY
+        echo "- Open Report: ${{ github.event.inputs.open_report }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "📁 **Reports Generated:**" >> $GITHUB_STEP_SUMMARY
+        echo "- Playwright HTML Report" >> $GITHUB_STEP_SUMMARY
+        if [ "${{ github.event.inputs.generate_report }}" = "true" ]; then
+          echo "- Enhanced Custom Report" >> $GITHUB_STEP_SUMMARY
+        fi
+        echo "- Test Results (JSON)" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "📥 **Download Reports:** Check the Actions tab for artifacts"
+      
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: manual-report-${{ github.event.inputs.test_suite }}
+        path: |
+          playwright-report/
+          test-results/
+          custom-reports/
+        retention-days: 90
+        
+    - name: Comment on workflow run
+      if: always()
+      run: |
+        echo "## 🎯 Manual Report Generation Complete" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "✅ **Workflow completed successfully**" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "📊 **Test Suite:** ${{ github.event.inputs.test_suite }}" >> $GITHUB_STEP_SUMMARY
+        echo "📅 **Generated:** $(date)" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "🚀 **Next Steps:**" >> $GITHUB_STEP_SUMMARY
+        echo "1. Download artifacts from Actions tab" >> $GITHUB_STEP_SUMMARY
+        echo "2. Open HTML reports in browser" >> $GITHUB_STEP_SUMMARY
+        echo "3. Review test results and coverage" >> $GITHUB_STEP_SUMMARY 

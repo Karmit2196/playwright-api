@@ -1,0 +1,73 @@
+name: Daily Playwright Tests
+
+on:
+  schedule:
+    # Run every day at 2:00 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  daily-test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps
+      
+    - name: Run health check tests
+      run: npm run test:health
+      
+    - name: Run framework demo tests
+      run: npm run test:demo
+      
+    - name: Run all tests
+      run: npm run test:full
+      
+    - name: Generate enhanced HTML report
+      run: npm run report:generate
+      
+    - name: Generate test report
+      run: npm run test:report
+      
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: daily-test-results
+        path: |
+          playwright-report/
+          test-results/
+          custom-reports/
+        retention-days: 7
+        
+    - name: Notify on failure
+      if: failure()
+      run: |
+        echo "Daily tests failed! Check the workflow run for details."
+        echo "Failed at: $(date)"
+        
+    - name: Comment on workflow run
+      if: always()
+      run: |
+        echo "## 📊 Daily Test Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "✅ **Tests Completed Successfully**" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "📁 **Reports Generated:**" >> $GITHUB_STEP_SUMMARY
+        echo "- Playwright HTML Report" >> $GITHUB_STEP_SUMMARY
+        echo "- Enhanced Custom Report" >> $GITHUB_STEP_SUMMARY
+        echo "- Test Results (JSON)" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "📥 **Download Reports:** Check the Actions tab for artifacts" >> $GITHUB_STEP_SUMMARY 

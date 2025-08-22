@@ -6,15 +6,48 @@
     "test": "playwright test",
     "test:list": "playwright test --reporter=list",
     "test:headed": "playwright test --headed",
-    "test:debug": "playwright test --debug"
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:codegen": "playwright codegen",
+    "test:install": "playwright install",
+    "test:install-deps": "playwright install --with-deps",
+    "test:health": "playwright test tests/health/",
+    "test:demo": "playwright test tests/examples/",
+    "test:users": "playwright test tests/users/",
+    "test:full": "playwright test --reporter=html",
+    "test:coverage": "playwright test --reporter=html --reporter=json",
+    "test:report": "playwright show-report",
+    "test:results": "playwright show-report test-results/",
+    "lint": "eslint src/**/*.ts tests/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts tests/**/*.ts --fix",
+    "type-check": "tsc --noEmit",
+    "build": "tsc",
+    "clean": "rm -rf test-results/ playwright-report/ coverage/ custom-reports/",
+    "preview": "playwright test --reporter=html && playwright show-report",
+    "ci": "npm run type-check && npm run test",
+    "dev": "npm run test:ui",
+    "report:generate": "node scripts/generateReport.js",
+    "report:enhanced": "npm run test && npm run report:generate",
+    "report:open": "playwright show-report",
+    "report:custom": "open custom-reports/ || xdg-open custom-reports/ || start custom-reports/",
+    "report:all": "npm run test:full && npm run report:generate && npm run report:open"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "playwright",
+    "api-testing",
+    "automation",
+    "typescript",
+    "testing-framework"
+  ],
+  "author": "Karmit Lalani",
   "license": "ISC",
-  "description": "",
+  "description": "A clean, scalable API testing framework built with Playwright and TypeScript",
   "devDependencies": {
     "@playwright/test": "^1.55.0",
     "@types/node": "^24.3.0",
-    "zod": "^4.0.17"
+    "zod": "^4.0.17",
+    "eslint": "^8.57.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0"
   }
 }

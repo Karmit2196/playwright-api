@@ -1,4 +1,4 @@
-name: Manual Report Generation
+name: Manual Job Runner
 
 on:
   workflow_dispatch:
@@ -15,7 +15,7 @@ on:
           - users
 
 jobs:
-  generate-report:
+  manual-job:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     
@@ -47,24 +47,24 @@ jobs:
           npm run test:users
         fi
       
-    - name: Generate test summary
+    - name: Generate job summary
       run: |
-        echo "## 📊 Manual Report Generation" >> $GITHUB_STEP_SUMMARY
+        echo "## 🎯 Manual Job Execution" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "🔧 **Configuration:**" >> $GITHUB_STEP_SUMMARY
         echo "- Test Suite: ${{ github.event.inputs.test_suite }}" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "📁 **Reports Generated:**" >> $GITHUB_STEP_SUMMARY
+        echo "📁 **Outputs Generated:**" >> $GITHUB_STEP_SUMMARY
         echo "- Playwright HTML Report" >> $GITHUB_STEP_SUMMARY
         echo "- Test Results (JSON)" >> $GITHUB_STEP_SUMMARY
         echo "- JUnit XML Report" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "📥 **Download Reports:** Check the Actions tab for artifacts"
+        echo "📥 **Download Results:** Check the Actions tab for artifacts"
       
     - uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: manual-report-${{ github.event.inputs.test_suite }}
+        name: manual-job-${{ github.event.inputs.test_suite }}
         path: |
           playwright-report/
           test-results/
@@ -73,12 +73,12 @@ jobs:
     - name: Comment on workflow run
       if: always()
       run: |
-        echo "## 🎯 Manual Report Generation Complete" >> $GITHUB_STEP_SUMMARY
+        echo "## 🚀 Manual Job Completed Successfully" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "✅ **Workflow completed successfully**" >> $GITHUB_STEP_SUMMARY
+        echo "✅ **Job executed successfully**" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "📊 **Test Suite:** ${{ github.event.inputs.test_suite }}" >> $GITHUB_STEP_SUMMARY
-        echo "📅 **Generated:** $(date)" >> $GITHUB_STEP_SUMMARY
+        echo "📅 **Completed:** $(date)" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "🚀 **Next Steps:**" >> $GITHUB_STEP_SUMMARY
         echo "1. Download artifacts from Actions tab" >> $GITHUB_STEP_SUMMARY

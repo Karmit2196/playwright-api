@@ -172,7 +172,7 @@ Supported environments: `practice`, `staging`, `production`
 
 ## 🚀 GitHub Actions
 
-This repository includes automated workflows for continuous integration and daily testing:
+The framework includes three GitHub Actions workflows for automated testing and CI/CD:
 
 ### **CI/CD Pipeline** (`.github/workflows/ci-cd.yml`)
 - **Triggers**: Every push to `main`/`develop` branches, every pull request
@@ -193,23 +193,20 @@ This repository includes automated workflows for continuous integration and dail
   - Uploads results for 7 days
   - **Generates HTML reports daily**
 
-### **Manual Report Generation** (`.github/workflows/manual-report.yml`)
+### **Manual Job Runner** (`.github/workflows/manual-job.yml`)
 - **Triggers**: Manual trigger only
 - **Features**:
   - Choose test suite to run (all, health, demo, users)
-  - Generate comprehensive HTML reports on demand
+  - Execute any test job on demand
+  - Generate comprehensive HTML reports
   - Customizable test suite selection
   - Uploads artifacts for 90 days
-  - **Perfect for on-demand testing and reporting**
+  - **Perfect for on-demand testing and job execution**
 
 ### **Manual Trigger**
-You can manually run any workflow from the GitHub Actions tab in your repository:
-
-1. **Go to Actions tab** in your GitHub repository
-2. **Select workflow** you want to run
-3. **Click "Run workflow"** button
-4. **Configure options** (for manual report generation)
-5. **Click "Run workflow"** to start
+- **Manual Job Runner**: Go to Actions → Manual Job Runner → Run workflow
+- **Choose test suite**: all, health, demo, or users
+- **Perfect for**: Testing specific features, debugging, or on-demand validation
 
 ### **HTML Reports Generated Automatically**
 Every workflow run now generates:
